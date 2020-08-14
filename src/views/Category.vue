@@ -12,7 +12,7 @@
                     align="center"
                     justify="end"
                     >
-                    <v-btn class="button-category" rounded >VER MÁS ha</v-btn>
+                    <v-btn class="button-category" rounded >VER MÁS</v-btn>
                 </v-row>
             </v-list-item>
             </v-card-actions>
@@ -52,6 +52,40 @@
                 </v-card-text>
             </v-card>
         </div>
+
+        <v-card
+            color="#385F73"
+            class="cards-category mt-1 card-best-seller"
+          >
+        </v-card>
+
+         <div class="products mt-2" v-if="bestsellers.length > 0">
+            
+            <v-card  v-for="(item,i) in bestsellers"
+                :key="i"
+                :src="item"
+                max-width="344"
+                class="box-product"
+            >
+                <v-img
+                :src="item.image.url"
+                height="194"
+                ></v-img>
+
+                <v-card-title class="product-titles">
+                     {{item.name }}
+                </v-card-title>
+
+                <v-card-text class="category-text d-flex">
+                    Textiles
+                </v-card-text>
+
+                <v-card-text class="price-text d-flex">
+                     {{item.price }}
+                </v-card-text>
+            </v-card>
+        </div>
+
     </v-col>
 </template>
 
@@ -69,6 +103,7 @@ export default {
                 products: []
             }],
             newArraivals: {products: [ ]},
+            bestsellers: {products: [ ]},
             sliders: [],
         }
     },
@@ -112,8 +147,14 @@ export default {
                 .then(dataItems => {
                     me.sections = dataItems
                     me.newArraivals = me.sections[0].products
+                    me.bestsellers = me.sections[1].products
 
                     me.newArraivals.map( p => {
+                        if(p.image){
+                            p.image.url = `${me.$apiUrlBase + p.image.url}`
+                        }                        
+                    })
+                    me.bestsellers.map( p => {
                         if(p.image){
                             p.image.url = `${me.$apiUrlBase + p.image.url}`
                         }
@@ -165,8 +206,9 @@ export default {
         padding: 0 16px;
     }
     .price-text{
-        color: #f06292;
+        color: #f06292 !important;
         padding: 0 16px;
+        font-weight: 500;
     }
     .products{
         display: flex;
@@ -175,9 +217,17 @@ export default {
     }
     .box-product{
         width: 49%;
+        margin-bottom: 5px;
     }
     .product-titles{
         font-size: 1em;
         padding-bottom: 0;
+    }
+    .card-best-seller{
+        background-image: url('../assets/bestsellers.png');
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 125px;
     }
 </style>

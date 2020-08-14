@@ -51,11 +51,15 @@ export default {
                     }
                 })
                     .then(res => res.json())
+                    .then(() => {
+                        this.$router.push({
+                            name: 'category'
+                        })
+                    })
                     .catch(error => {
                         console.error('Error:', error)
                     })
                     .finally( () => {
-                        alert('muevete')
                         this.$router.push({
                             name: 'category'
                         })
